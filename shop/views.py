@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from .models import Good, Category, Supplier
+from .models import Good, Category, Supplier, OrderItem
 from .forms import GoodForm
+from django.db import connection
 
 def product_list(request):
     products = Good.objects.all()
@@ -61,3 +62,45 @@ def product_create(request):
     else:
         form = GoodForm()
     return render(request, "shop/product_form.html", {"form": form, "mode": "create"})
+
+def product_update(request, pk):
+    product = get_object_or_404(Good, pk=pk)
+    if request.method == "POST":
+        form = GoodForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("product_list")
+    else:
+        form = GoodForm(instance=product)
+    return render(request, "shop/product_form.html", {"form": form, "mode": "update"})
+
+def product_delete(request, pk):
+    product = get_object_or_404(Good, pk=pk)
+
+    # 1. Проверяем, есть ли позиции заказа с этим товаром
+    in_orders = OrderItem.objects.filter(product_id=product.id).exists()
+
+    if request.method == "POST":
+        if in_orders:
+            # Товар есть в заказах — НЕ удаляем
+            return render(
+                request, "shop/product_cannot_delete.html", {"product": product}
+            )
+        else:
+            # 2. Товара нет в заказах — удаляем напрямую из таблицы goods
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM goods WHERE id = %s",
+                    [product.id],
+                )
+            return redirect("product_list")
+
+    # GET-запрос — просто страница подтверждения
+    return render(
+        request,
+        "shop/product_confirm_delete.html",
+        {
+            "product": product,
+            "in_orders": in_orders,
+        },
+    )

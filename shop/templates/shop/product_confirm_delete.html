@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Удалить товар</title>
+</head>
+
+<body>
+    <h1>Удалить товар</h1>
+
+    {% if in_orders %}
+    <p>Товар «{{ product.name }}» участвует в заказах. Удаление недоступно.</p>
+    <p><a href="{% url 'product_list' %}">Назад к списку</a></p>
+    {% else %}
+    <p>Вы уверены, что хотите удалить товар «{{ product.name }}» (ID {{ product.id }})?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Да, удалить</button>
+        <a href="{% url 'product_list' %}">Отмена</a>
+    </form>
+    {% endif %}
+</body>
+
+</html>
