@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from .models import Good, Category, Supplier, OrderItem
+from .models import Good, Category, Supplier, OrderItem, Order
 from .forms import GoodForm
 from django.db import connection
 
@@ -104,3 +104,29 @@ def product_delete(request, pk):
             "in_orders": in_orders,
         },
     )
+def order_list(request):
+    orders = Order.objects.select_related("user", "pickup_point", "status")
+    return render(request, "shop/order_list.html", {"orders": orders})
+
+
+def order_detail(request, pk):
+    order = get_object_or_404(
+        Order.objects.select_related("user", "pickup_point", "status"),
+        pk=pk,
+    )
+    items = OrderItem.objects.select_related("product").filter(order=order)
+
+    # считаем итоговую сумму с учётом скидки
+    total = 0
+    for item in items:
+        price = item.product.price
+        discount = item.product.discount or 0
+        price_with_discount = price * (100 - discount) // 100
+        total += price_with_discount * item.amount
+
+    context = {
+        "order": order,
+        "items": items,
+        "total": total,
+    }
+    return render(request, "shop/order_detail.html", context)

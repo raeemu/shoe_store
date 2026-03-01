@@ -145,10 +145,11 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, primary_key=True)
     product = models.ForeignKey(Good, on_delete=models.PROTECT)
     amount = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = "order_items"
+        unique_together = (("order", "product"),)
