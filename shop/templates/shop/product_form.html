@@ -1,24 +1,17 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>{% if mode == 'create' %}Новый товар{% else %}Редактирование товара{% endif %}</title>
-</head>
+{% block title %}{% if mode == 'create' %}Новый товар{% else %}Редактирование товара{% endif %}{% endblock %}
 
-<body>
-    <h1>{% if mode == 'create' %}Новый товар{% else %}Редактирование товара{% endif %}</h1>
+<h1>{% if mode == 'create' %}Новый товар{% else %}Редактирование товара{% endif %}</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <button type="submit">
-            {% if mode == 'create' %}Создать{% else %}Сохранить{% endif %}
-        </button>
-        <a href="{% url 'product_list' %}">Отмена</a>
-    </form>
-</body>
-
-</html>
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <button type="submit">
+        {% if mode == 'create' %}Создать{% else %}Сохранить{% endif %}
+    </button>
+    <a href="{% url 'product_list' %}">Отмена</a>
+</form>
+{% endblock %}

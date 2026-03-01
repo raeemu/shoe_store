@@ -3,6 +3,7 @@ from django.db.models import Q
 from .models import Good, Category, Supplier, OrderItem, Order
 from .forms import GoodForm
 from django.db import connection
+from django.contrib.auth.decorators import login_required
 
 def product_list(request):
     products = Good.objects.all()
@@ -53,6 +54,7 @@ def product_detail(request, pk):
     product = get_object_or_404(Good, pk=pk)
     return render(request, "shop/product_detail.html", {"product": product})
 
+@login_required
 def product_create(request):
     if request.method == "POST":
         form = GoodForm(request.POST)
@@ -63,6 +65,7 @@ def product_create(request):
         form = GoodForm()
     return render(request, "shop/product_form.html", {"form": form, "mode": "create"})
 
+@login_required
 def product_update(request, pk):
     product = get_object_or_404(Good, pk=pk)
     if request.method == "POST":
@@ -74,6 +77,7 @@ def product_update(request, pk):
         form = GoodForm(instance=product)
     return render(request, "shop/product_form.html", {"form": form, "mode": "update"})
 
+@login_required
 def product_delete(request, pk):
     product = get_object_or_404(Good, pk=pk)
 
@@ -104,6 +108,7 @@ def product_delete(request, pk):
             "in_orders": in_orders,
         },
     )
+    
 def order_list(request):
     orders = Order.objects.select_related("user", "pickup_point", "status")
     return render(request, "shop/order_list.html", {"orders": orders})

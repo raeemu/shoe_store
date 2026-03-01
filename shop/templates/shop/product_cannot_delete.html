@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Удаление невозможно</title>
-</head>
+{% block title %}Удаление невозможно{% endblock %}
 
-<body>
+{% block content %}
     <h1>Удаление невозможно</h1>
     <p>Товар «{{ product.name }}» нельзя удалить, так как он уже входит в заказы.</p>
     <p><a href="{% url 'product_list' %}">Назад к списку</a></p>
-</body>
-
-</html>
+{% endblock %}

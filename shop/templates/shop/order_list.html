@@ -1,51 +1,45 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Список заказов</title>
-</head>
+{% block title %}Список заказов{% endblock %}
 
-<body>
-    <h1>Список заказов</h1>
+{% block content %}
+<h1>Список заказов</h1>
 
-    <p>
-        <a href="{% url 'product_list' %}">Товары</a> |
-        <a href="{% url 'order_list' %}">Заказы</a>
-    </p>
+<p>
+    <a href="{% url 'product_list' %}">Товары</a> |
+    <a href="{% url 'order_list' %}">Заказы</a>
+</p>
 
-    <table border="1" cellpadding="4" cellspacing="0">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Дата заказа</th>
-                <th>Дата выдачи</th>
-                <th>Пункт выдачи</th>
-                <th>Покупатель</th>
-                <th>Код доставки</th>
-                <th>Статус</th>
-                <th>Детали</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for o in orders %}
-            <tr>
-                <td>{{ o.id }}</td>
-                <td>{{ o.order_date }}</td>
-                <td>{{ o.delivery_date }}</td>
-                <td>{{ o.pickup_point }}</td>
-                <td>{{ o.user }}</td>
-                <td>{{ o.delivery_code }}</td>
-                <td>{{ o.status.name }}</td>
-                <td><a href="{% url 'order_detail' o.id %}">Открыть</a></td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="8">Заказов нет</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-
-</html>
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Дата заказа</th>
+            <th>Дата выдачи</th>
+            <th>Пункт выдачи</th>
+            <th>Покупатель</th>
+            <th>Код доставки</th>
+            <th>Статус</th>
+            <th>Детали</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr>
+            <td>{{ o.id }}</td>
+            <td>{{ o.order_date }}</td>
+            <td>{{ o.delivery_date }}</td>
+            <td>{{ o.pickup_point }}</td>
+            <td>{{ o.user }}</td>
+            <td>{{ o.delivery_code }}</td>
+            <td>{{ o.status.name }}</td>
+            <td><a href="{% url 'order_detail' o.id %}">Открыть</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">Заказов нет</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

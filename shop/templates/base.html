@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Магазин обуви{% endblock %}</title>
+</head>
+
+<body>
+    <header>
+        <p>
+            <a href="{% url 'product_list' %}">Товары</a> |
+            <a href="{% url 'order_list' %}">Заказы</a> |
+            {% if request.user.is_authenticated %}
+            Вы вошли как {{ request.user.username }}
+            (<a href="{% url 'logout' %}">Выйти</a>)
+            {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+            {% endif %}
+        </p>
+        <hr>
+    </header>
+
+    {% block content %}{% endblock %}
+</body>
+
+</html>

@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>{{ product.name }}</title>
-</head>
+{% block title %}{{ product.name }}{% endblock %}
 
-<body>
+{% block content %}
     <h1>{{ product.name }}</h1>
 
     <p><strong>Артикул:</strong> {{ product.product_code }}</p>
@@ -26,6 +22,4 @@
     {% endif %}
 
     <p><a href="{% url 'product_list' %}">← Назад к списку</a></p>
-</body>
-
-</html>
+{% endblock %}

@@ -1,59 +1,53 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Заказ №{{ order.id }}</title>
-</head>
+{% block title %}Детали заказа{% endblock %}
 
-<body>
-    <h1>Заказ №{{ order.id }}</h1>
+{% block content %}
+<h1>Заказ №{{ order.id }}</h1>
 
-    <p><a href="{% url 'order_list' %}">← К списку заказов</a></p>
+<p><a href="{% url 'order_list' %}">← К списку заказов</a></p>
 
-    <h3>Информация о заказе</h3>
-    <p><strong>Дата заказа:</strong> {{ order.order_date }}</p>
-    <p><strong>Дата выдачи:</strong> {{ order.delivery_date }}</p>
-    <p><strong>Пункт выдачи:</strong> {{ order.pickup_point }}</p>
-    <p><strong>Покупатель:</strong> {{ order.user }}</p>
-    <p><strong>Код доставки:</strong> {{ order.delivery_code }}</p>
-    <p><strong>Статус:</strong> {{ order.status.name }}</p>
+<h3>Информация о заказе</h3>
+<p><strong>Дата заказа:</strong> {{ order.order_date }}</p>
+<p><strong>Дата выдачи:</strong> {{ order.delivery_date }}</p>
+<p><strong>Пункт выдачи:</strong> {{ order.pickup_point }}</p>
+<p><strong>Покупатель:</strong> {{ order.user }}</p>
+<p><strong>Код доставки:</strong> {{ order.delivery_code }}</p>
+<p><strong>Статус:</strong> {{ order.status.name }}</p>
 
-    <h3>Состав заказа</h3>
-    <table border="1" cellpadding="4" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Товар</th>
-                <th>Цена</th>
-                <th>Скидка</th>
-                <th>Цена со скидкой</th>
-                <th>Количество</th>
-                <th>Сумма</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            {% with price=item.product.price discount=item.product.discount %}
-            {% with price_with_discount=price|add:"0" %}
-            {% endwith %}
-            {% endwith %}
-            <tr>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.product.price }}</td>
-                <td>{{ item.product.discount }}%</td>
-                <td>
-                    {{ item.product.price|floatformat:"0" }}
-                    →
-                    {{ item.product.price|add:"0" }}
-                </td>
-                <td>{{ item.amount }}</td>
-                <td>{{ item.product.price|add:"0" }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h3>Состав заказа</h3>
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Товар</th>
+            <th>Цена</th>
+            <th>Скидка</th>
+            <th>Цена со скидкой</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        {% with price=item.product.price discount=item.product.discount %}
+        {% with price_with_discount=price|add:"0" %}
+        {% endwith %}
+        {% endwith %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.product.discount }}%</td>
+            <td>
+                {{ item.product.price|floatformat:"0" }}
+                →
+                {{ item.product.price|add:"0" }}
+            </td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.product.price|add:"0" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-    <h3>Итоговая сумма: {{ total }}</h3>
-</body>
-
-</html>
+<h3>Итоговая сумма: {{ total }}</h3>
+{% endblock %}

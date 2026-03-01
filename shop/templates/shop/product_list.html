@@ -1,99 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список товаров</title>
-</head>
+{% block title %}Список товаров{% endblock %}
 
-<body>
-    <h1>Список товаров</h1>
+{% block content %}
+<h1>Список товаров</h1>
 
-    <p>
-        <a href="{% url 'product_create' %}">Добавить товар</a>
-    </p>
+<p>
+    <a href="{% url 'product_create' %}">Добавить товар</a>
+</p>
 
 
-    <form method="get">
-        <input type="text" name="search" placeholder="Поиск по названию или артикулу"
-            value="{{ search_query|default:'' }}">
+<form method="get">
+    <input type="text" name="search" placeholder="Поиск по названию или артикулу" value="{{ search_query|default:'' }}">
 
-        <select name="category">
-            <option value="">Все категории</option>
-            {% for cat in categories %}
-            <option value="{{ cat.id }}" {% if current_category == cat.id|stringformat:"s" %}selected{% endif %}>
-                {{ cat.name }}
-            </option>
-            {% endfor %}
-        </select>
+    <select name="category">
+        <option value="">Все категории</option>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if current_category == cat.id|stringformat:"s" %}selected{% endif %}>
+            {{ cat.name }}
+        </option>
+        {% endfor %}
+    </select>
 
-        <select name="supplier">
-            <option value="">Все поставщики</option>
-            {% for sup in suppliers %}
-            <option value="{{ sup.id }}" {% if current_supplier == sup.id|stringformat:"s" %}selected{% endif %}>
-                {{ sup.name }}
-            </option>
-            {% endfor %}
-        </select>
+    <select name="supplier">
+        <option value="">Все поставщики</option>
+        {% for sup in suppliers %}
+        <option value="{{ sup.id }}" {% if current_supplier == sup.id|stringformat:"s" %}selected{% endif %}>
+            {{ sup.name }}
+        </option>
+        {% endfor %}
+    </select>
 
-        <select name="sort">
-            <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Название А→Я</option>
-            <option value="name_desc" {% if current_sort == 'name_desc' %}selected{% endif %}>Название Я→А</option>
-            <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цена ↑</option>
-            <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цена ↓</option>
-        </select>
+    <select name="sort">
+        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Название А→Я</option>
+        <option value="name_desc" {% if current_sort == 'name_desc' %}selected{% endif %}>Название Я→А</option>
+        <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цена ↑</option>
+        <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цена ↓</option>
+    </select>
 
-        <button type="submit">Применить</button>
+    <button type="submit">Применить</button>
 
-        <a href="{% url 'product_list' %}">
-            <button type="button">Сброс</button>
-        </a>
-    </form>
-    <table border="1" cellpadding="4" cellspacing="0">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Артикул</th>
-                <th>Название</th>
-                <th>Категория</th>
-                <th>Поставщик</th>
-                <th>Производитель</th>
-                <th>Цена</th>
-                <th>Скидка</th>
-                <th>Остаток</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in products %}
-            <tr>
-                <td>{{ p.id }}</td>
-                <td>{{ p.product_code }}</td>
-                <td>
-                    <a href="{% url 'product_detail' p.id %}">
-                        {{ p.name }}
-                    </a>
-                </td>
-                <td>{{ p.category.name }}</td>
-                <td>{{ p.supplier.name }}</td>
-                <td>{{ p.manufacturer.name }}</td>
-                <td>{{ p.price }}</td>
-                <td>{{ p.discount }}</td>
-                <td>{{ p.amount }}</td>
-                <td>
-                    <a href="{% url 'product_detail' p.id %}">Просмотр</a> |
-                    <a href="{% url 'product_update' p.id %}">Изменить</a> |
-                    <a href="{% url 'product_delete' p.id %}">Удалить</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="9">Нет товаров</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-
-</html>
+    <a href="{% url 'product_list' %}">
+        <button type="button">Сброс</button>
+    </a>
+</form>
+<table border="1" cellpadding="4" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Артикул</th>
+            <th>Название</th>
+            <th>Категория</th>
+            <th>Поставщик</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Скидка</th>
+            <th>Остаток</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.product_code }}</td>
+            <td>
+                <a href="{% url 'product_detail' p.id %}">
+                    {{ p.name }}
+                </a>
+            </td>
+            <td>{{ p.category.name }}</td>
+            <td>{{ p.supplier.name }}</td>
+            <td>{{ p.manufacturer.name }}</td>
+            <td>{{ p.price }}</td>
+            <td>{{ p.discount }}</td>
+            <td>{{ p.amount }}</td>
+            <td>
+                <a href="{% url 'product_detail' p.id %}">Просмотр</a> |
+                <a href="{% url 'product_update' p.id %}">Изменить</a> |
+                <a href="{% url 'product_delete' p.id %}">Удалить</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9">Нет товаров</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

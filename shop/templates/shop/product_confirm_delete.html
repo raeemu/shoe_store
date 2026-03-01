@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Удалить товар</title>
-</head>
+{% block title %}Удалить товар{% endblock %}
 
-<body>
+{% block content %}
     <h1>Удалить товар</h1>
 
     {% if in_orders %}
@@ -20,6 +16,4 @@
         <a href="{% url 'product_list' %}">Отмена</a>
     </form>
     {% endif %}
-</body>
-
-</html>
+{% endblock %}
