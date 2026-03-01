@@ -10,6 +10,11 @@
 <body>
     <h1>Список товаров</h1>
 
+    <p>
+        <a href="{% url 'product_create' %}">Добавить товар</a>
+    </p>
+
+
     <form method="get">
         <input type="text" name="search" placeholder="Поиск по названию или артикулу"
             value="{{ search_query|default:'' }}">

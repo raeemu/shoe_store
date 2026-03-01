@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from .models import Good, Category, Supplier
-
+from .forms import GoodForm
 
 def product_list(request):
     products = Good.objects.all()
@@ -51,3 +51,13 @@ def product_list(request):
 def product_detail(request, pk):
     product = get_object_or_404(Good, pk=pk)
     return render(request, "shop/product_detail.html", {"product": product})
+
+def product_create(request):
+    if request.method == "POST":
+        form = GoodForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("product_list")
+    else:
+        form = GoodForm()
+    return render(request, "shop/product_form.html", {"form": form, "mode": "create"})
