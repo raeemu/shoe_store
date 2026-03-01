@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from .models import Good, Category, Supplier
 
@@ -47,3 +47,7 @@ def product_list(request):
         "current_sort": sort_by,
     }
     return render(request, "shop/product_list.html", context)
+
+def product_detail(request, pk):
+    product = get_object_or_404(Good, pk=pk)
+    return render(request, "shop/product_detail.html", {"product": product})
