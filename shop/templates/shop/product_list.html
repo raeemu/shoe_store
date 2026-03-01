@@ -7,6 +7,45 @@
 </head>
 <body>
     <h1>Список товаров</h1>
+
+<form method="get">
+    <input type="text" name="search"
+        placeholder="Поиск по названию или артикулу"
+        value="{{ search_query|default:'' }}">
+
+    <select name="category">
+        <option value="">Все категории</option>
+        {% for cat in categories %}
+            <option value="{{ cat.id }}"
+                {% if current_category == cat.id|stringformat:"s" %}selected{% endif %}>
+                {{ cat.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select name="supplier">
+        <option value="">Все поставщики</option>
+        {% for sup in suppliers %}
+            <option value="{{ sup.id }}"
+                {% if current_supplier == sup.id|stringformat:"s" %}selected{% endif %}>
+                {{ sup.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select name="sort">
+        <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Название А→Я</option>
+        <option value="name_desc" {% if current_sort == 'name_desc' %}selected{% endif %}>Название Я→А</option>
+        <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цена ↑</option>
+        <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цена ↓</option>
+    </select>
+
+    <button type="submit">Применить</button>
+
+    <a href="{% url 'product_list' %}">
+        <button type="button">Сброс</button>
+    </a>
+</form>
     <table border="1" cellpadding="4" cellspacing="0">
         <thead>
             <tr>
