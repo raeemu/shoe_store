@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список товаров</title>
+</head>
+<body>
+    <h1>Список товаров</h1>
+    <table border="1" cellpadding="4" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Артикул</th>
+                <th>Название</th>
+                <th>Категория</th>
+                <th>Поставщик</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Скидка</th>
+                <th>Остаток</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.product_code }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.category.name }}</td>
+                <td>{{ p.supplier.name }}</td>
+                <td>{{ p.manufacturer.name }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.discount }}</td>
+                <td>{{ p.amount }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="9">Нет товаров</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
